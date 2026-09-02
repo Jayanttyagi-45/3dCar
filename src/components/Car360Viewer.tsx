@@ -9,6 +9,7 @@ interface Car360ViewerProps {
   filenamePattern: string;
   frameCount: number;
   alt: string;
+  isActive?: boolean;
   dragSensitivityPx?: number;
   autoplayFrameIntervalMs?: number;
 }
@@ -24,12 +25,19 @@ export default function Car360Viewer({
   filenamePattern,
   frameCount,
   alt,
+  isActive = true,
   dragSensitivityPx = 8,
   autoplayFrameIntervalMs = 60,
 }: Car360ViewerProps) {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [loadedCount, setLoadedCount] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
+
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
+  if (isActive !== prevIsActive) {
+    setPrevIsActive(isActive);
+    if (isActive) setHasInteracted(false);
+  }
 
   const isDraggingRef = useRef(false);
   const lastPointerXRef = useRef(0);
